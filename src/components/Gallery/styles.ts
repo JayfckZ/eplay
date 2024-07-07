@@ -90,6 +90,10 @@ export const ModalContent = styled.div`
     max-width: 100%;
   }
 
+  > img {
+    width: 100%;
+  }
+
   iframe {
     width: 100%;
     height: 480px;
