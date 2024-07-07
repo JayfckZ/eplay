@@ -11,8 +11,6 @@ const Hero = () => (
         <Tag>Windows</Tag>
         <Tag>Xbox Series X|S</Tag>
         <Tag>PS5</Tag>
-        <Tag>Xbox One</Tag>
-        <Tag>PS4</Tag>
       </div>
       <Infos>
         <h2>Hogwarts Legacy</h2>
