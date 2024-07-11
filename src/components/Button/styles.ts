@@ -16,6 +16,11 @@ export const ButtonContainer = styled.button<Props>`
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
+  transtion: ease 0.3s;
+
+  &:hover {
+    filter: brightness(0.7);
+  }
 `
 
 export const ButtonLink = styled(Link)`
