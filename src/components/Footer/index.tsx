@@ -1,44 +1,44 @@
-import { Container, FooterSection, SectionTitle, Links, Link } from './styles'
+import * as S from './styles'
 
-const currentyear = new Date().getFullYear()
+const currentYear = new Date().getFullYear()
 
 const Footer = () => (
-  <Container>
+  <S.Container>
     <div className="container">
-      <FooterSection>
-        <SectionTitle>Categorias</SectionTitle>
-        <Links>
+      <S.FooterSection>
+        <S.SectionTitle>Categorias</S.SectionTitle>
+        <S.Links>
           <li>
-            <Link to="/categories#action">Ação</Link>
+            <S.Link to="/categories#action">Ação</S.Link>
           </li>
           <li>
-            <Link to="/categories#sport">Esportes</Link>
+            <S.Link to="/categories#sport">Esportes</S.Link>
           </li>
           <li>
-            <Link to="/categories#fight">Luta</Link>
+            <S.Link to="/categories#fight">Luta</S.Link>
           </li>
           <li>
-            <Link to="/categories#rpg">RPG</Link>
+            <S.Link to="/categories#rpg">RPG</S.Link>
           </li>
           <li>
-            <Link to="/categories#simulation">Simulação</Link>
+            <S.Link to="/categories#simulation">Simulação</S.Link>
           </li>
-        </Links>
-      </FooterSection>
-      <FooterSection>
-        <SectionTitle>Acesso rápido</SectionTitle>
-        <Links>
+        </S.Links>
+      </S.FooterSection>
+      <S.FooterSection>
+        <S.SectionTitle>Acesso rápido</S.SectionTitle>
+        <S.Links>
           <li>
-            <Link to="/#on-sale">Promoções</Link>
+            <S.Link to="/#on-sale">Promoções</S.Link>
           </li>
           <li>
-            <Link to="/#coming-soon">Em breve</Link>
+            <S.Link to="/#coming-soon">Em breve</S.Link>
           </li>
-        </Links>
-      </FooterSection>
-      <p>{currentyear} - &copy; E-PLAY | Todos os direitos reservados.</p>
+        </S.Links>
+      </S.FooterSection>
+      <p>{currentYear} - &copy; E-PLAY | Todos os direitos reservados.</p>
     </div>
-  </Container>
+  </S.Container>
 )
 
 export default Footer

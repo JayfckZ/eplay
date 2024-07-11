@@ -1,17 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { RootReducer } from '../../store'
+
+import * as S from './styles'
 import Button from '../Button'
 import Tag from '../Tag'
-import {
-  CartContainer,
-  Overlay,
-  SideBar,
-  Prices,
-  Quantity,
-  CartItem
-} from './styles'
+
+import { parseToBrl } from '../../utils'
+import { RootReducer } from '../../store'
 import { remove, close } from '../../store/reducers/cart'
-import { formataPreco } from '../ProductsList'
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -31,28 +26,28 @@ const Cart = () => {
     }, 0)
   }
   return (
-    <CartContainer className={isOpen ? 'is-open' : ''}>
-      <Overlay onClick={() => closeCart()} />
-      <SideBar>
+    <S.CartContainer className={isOpen ? 'is-open' : ''}>
+      <S.Overlay onClick={() => closeCart()} />
+      <S.SideBar>
         <ul>
           {items.map((item) => (
-            <CartItem key={item.id}>
+            <S.CartItem key={item.id}>
               <img src={item.media.thumbnail} />
               <div>
                 <h3>{item.name}</h3>
                 <Tag>{item.details.category}</Tag>
                 <Tag>{item.details.system}</Tag>
-                <span>{formataPreco(item.prices.current)}</span>
+                <span>{parseToBrl(item.prices.current)}</span>
               </div>
               <button type="button" onClick={() => removeFromCart(item.id)} />
-            </CartItem>
+            </S.CartItem>
           ))}
         </ul>
-        <Quantity>{items.length} jogo(s) no carrinho.</Quantity>
-        <Prices>
-          Total de {formataPreco(getTotalPrices())}
+        <S.Quantity>{items.length} jogo(s) no carrinho.</S.Quantity>
+        <S.Prices>
+          Total de {parseToBrl(getTotalPrices())}
           <span>Até 6x sem juros</span>
-        </Prices>
+        </S.Prices>
         <Button title="Clique para continuar sua compra." type="button">
           Continuar com a compra
         </Button>
@@ -64,8 +59,8 @@ const Cart = () => {
         >
           Voltar à página
         </Button>
-      </SideBar>
-    </CartContainer>
+      </S.SideBar>
+    </S.CartContainer>
   )
 }
 

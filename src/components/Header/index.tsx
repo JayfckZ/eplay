@@ -1,19 +1,14 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {
-  HeaderBar,
-  LinkCart,
-  LinkItem,
-  Links,
-  Hamburguer,
-  HeaderRow,
-  NavMobile
-} from './styles'
-import logo from '../../assets/images/logo.svg'
-import carrinho from '../../assets/images/carrinho.svg'
-import { open } from '../../store/reducers/cart'
+
+import * as S from './styles'
+
 import { RootReducer } from '../../store'
+import { open } from '../../store/reducers/cart'
+
+import logoIcon from '../../assets/images/logo.svg'
+import cartIcon from '../../assets/images/carrinho.svg'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -25,56 +20,56 @@ const Header = () => {
   }
 
   return (
-    <HeaderBar>
-      <HeaderRow>
+    <S.HeaderBar>
+      <S.HeaderRow>
         <div>
-          <Hamburguer onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <S.Hamburguer onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <span />
             <span />
             <span />
-          </Hamburguer>
+          </S.Hamburguer>
           <Link to="/">
-            <img src={logo} alt="EPLAY" />
+            <img src={logoIcon} alt="EPLAY" />
           </Link>
           <nav>
-            <Links>
-              <LinkItem>
+            <S.Links>
+              <S.LinkItem>
                 <Link to="/categories">Categorias</Link>
-              </LinkItem>
-              <LinkItem>
+              </S.LinkItem>
+              <S.LinkItem>
                 <Link to="/">Novidades</Link>
-              </LinkItem>
-              <LinkItem>
+              </S.LinkItem>
+              <S.LinkItem>
                 <Link to="/">Promoções</Link>
-              </LinkItem>
-            </Links>
+              </S.LinkItem>
+            </S.Links>
           </nav>
         </div>
-        <LinkCart onClick={() => openCart()}>
+        <S.LinkCart onClick={() => openCart()}>
           {items.length} <span>&nbsp;- produto(s)</span>
-          <img src={carrinho} alt="carrinho" />
-        </LinkCart>
-      </HeaderRow>
-      <NavMobile className={isMenuOpen ? 'is-open' : ''}>
-        <Links>
-          <LinkItem>
+          <img src={cartIcon} alt="carrinho" />
+        </S.LinkCart>
+      </S.HeaderRow>
+      <S.NavMobile className={isMenuOpen ? 'is-open' : ''}>
+        <S.Links>
+          <S.LinkItem>
             <Link to="/categories" onClick={() => setIsMenuOpen(false)}>
               Categorias
             </Link>
-          </LinkItem>
-          <LinkItem>
+          </S.LinkItem>
+          <S.LinkItem>
             <Link to="/" onClick={() => setIsMenuOpen(false)}>
               Novidades
             </Link>
-          </LinkItem>
-          <LinkItem>
+          </S.LinkItem>
+          <S.LinkItem>
             <Link to="/" onClick={() => setIsMenuOpen(false)}>
               Promoções
             </Link>
-          </LinkItem>
-        </Links>
-      </NavMobile>
-    </HeaderBar>
+          </S.LinkItem>
+        </S.Links>
+      </S.NavMobile>
+    </S.HeaderBar>
   )
 }
 
