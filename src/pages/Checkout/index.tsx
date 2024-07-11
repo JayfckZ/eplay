@@ -1,7 +1,8 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
+import InputMask from 'react-input-mask'
 import * as Yup from 'yup'
 
 import * as S from './styles'
@@ -9,6 +10,7 @@ import Card from '../../components/Card'
 import Button from '../../components/Button'
 
 import { RootReducer } from '../../store'
+import { clear } from '../../store/reducers/cart'
 import { usePurchaseMutation } from '../../services/api'
 
 import barCode from '../../assets/images/boleto.png'
@@ -23,10 +25,10 @@ type Installment = {
 
 const Checkout = () => {
   const [payWithCard, setPayWithCard] = useState(false)
-  const [purchase, { isLoading, isError, data, isSuccess }] =
-    usePurchaseMutation()
+  const [purchase, { isLoading, data, isSuccess }] = usePurchaseMutation()
   const { items } = useSelector((state: RootReducer) => state.cart)
   const [installments, setInstallments] = useState<Installment[]>([])
+  const dispatch = useDispatch()
 
   const totalPrice: number = getTotalPrices(items)
 
@@ -85,18 +87,16 @@ const Checkout = () => {
       cardCode: Yup.string().when((values, schema) =>
         payWithCard ? schema.required('O campo é obrigatório.') : schema
       ),
-      installments: Yup.string().when((values, schema) =>
+      installments: Yup.number().when((values, schema) =>
         payWithCard ? schema.required('O campo é obrigatório.') : schema
       )
     }),
     onSubmit: (values) => {
       purchase({
-        products: [
-          {
-            id: 1,
-            price: 10
-          }
-        ],
+        products: items.map((item) => ({
+          id: item.id,
+          price: item.prices.current as number
+        })),
         billing: {
           name: values.fullName,
           email: values.email,
@@ -120,11 +120,17 @@ const Checkout = () => {
             },
             code: Number(values.cardCode)
           },
-          installments: 1
+          installments: values.installments
         }
       })
     }
   })
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clear())
+    }
+  }, [isSuccess, dispatch])
 
   useEffect(() => {
     const calculateInstallments = () => {
@@ -152,13 +158,13 @@ const Checkout = () => {
     return hasError
   }
 
-  if (items.length == 0) {
+  if (items.length == 0 && !isSuccess) {
     return <Navigate to="/" />
   }
 
   return (
     <div className="container">
-      {isSuccess ? (
+      {isSuccess && data ? (
         <Card title="Muito obrigado">
           <>
             <p>
@@ -227,7 +233,8 @@ const Checkout = () => {
                 </S.InputGroup>
                 <S.InputGroup>
                   <label htmlFor="cpf">CPF</label>
-                  <input
+                  <InputMask
+                    mask="999.999.999-99"
                     id="cpf"
                     type="text"
                     name="cpf"
@@ -317,7 +324,8 @@ const Checkout = () => {
                         <label htmlFor="cpfCardOwner">
                           CPF do titular do cartão
                         </label>
-                        <input
+                        <InputMask
+                          mask="999.999.999-99"
                           id="cpfCardOwner"
                           type="text"
                           name="cpfCardOwner"
@@ -347,7 +355,8 @@ const Checkout = () => {
                       </S.InputGroup>
                       <S.InputGroup>
                         <label htmlFor="cardNumber">Número do cartão</label>
-                        <input
+                        <InputMask
+                          mask="9999 9999 9999 9999"
                           id="cardNumber"
                           type="text"
                           name="cardNumber"
@@ -361,7 +370,8 @@ const Checkout = () => {
                       </S.InputGroup>
                       <S.InputGroup maxWidth="123px">
                         <label htmlFor="expiresMonth">Mês do vencimento</label>
-                        <input
+                        <InputMask
+                          mask="99"
                           id="expiresMonth"
                           type="text"
                           name="expiresMonth"
@@ -375,7 +385,8 @@ const Checkout = () => {
                       </S.InputGroup>
                       <S.InputGroup maxWidth="123px">
                         <label htmlFor="expiresYear">Ano do vencimento</label>
-                        <input
+                        <InputMask
+                          mask="99"
                           id="expiresYear"
                           type="text"
                           name="expiresYear"
@@ -389,7 +400,8 @@ const Checkout = () => {
                       </S.InputGroup>
                       <S.InputGroup maxWidth="48px">
                         <label htmlFor="cardCode">CVV</label>
-                        <input
+                        <InputMask
+                          mask="999"
                           id="cardCode"
                           type="text"
                           name="cardCode"
@@ -416,7 +428,10 @@ const Checkout = () => {
                           }
                         >
                           {installments.map((installment) => (
-                            <option key={installment.quantity}>
+                            <option
+                              value={installment.quantity}
+                              key={installment.quantity}
+                            >
                               {installment.quantity}x de{' '}
                               {installment.formattedAmount}
                             </option>
@@ -442,8 +457,9 @@ const Checkout = () => {
             onClick={form.handleSubmit}
             type="submit"
             title="Clique aqui para finalizar a compra."
+            disabled={isLoading}
           >
-            Finalizar compra
+            {isLoading ? 'Finalizando compra...' : 'Finalizar compra'}
           </Button>
         </form>
       )}

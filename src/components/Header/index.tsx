@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 
 import * as S from './styles'
 
@@ -28,24 +28,26 @@ const Header = () => {
             <span />
             <span />
           </S.Hamburguer>
-          <Link to="/">
-            <img src={logoIcon} alt="EPLAY" />
-          </Link>
+          <HashLink to="/">
+            <h1>
+              <img src={logoIcon} alt="EPLAY" />
+            </h1>
+          </HashLink>
           <nav>
             <S.Links>
               <S.LinkItem>
-                <Link to="/categories">Categorias</Link>
+                <HashLink to="/categories">Categorias</HashLink>
               </S.LinkItem>
               <S.LinkItem>
-                <Link to="/">Novidades</Link>
+                <HashLink to="/#coming-soon">Novidades</HashLink>
               </S.LinkItem>
               <S.LinkItem>
-                <Link to="/">Promoções</Link>
+                <HashLink to="/#on-sale">Promoções</HashLink>
               </S.LinkItem>
             </S.Links>
           </nav>
         </div>
-        <S.LinkCart onClick={() => openCart()}>
+        <S.LinkCart role="button" onClick={openCart}>
           {items.length} <span>&nbsp;- produto(s)</span>
           <img src={cartIcon} alt="carrinho" />
         </S.LinkCart>
@@ -53,19 +55,19 @@ const Header = () => {
       <S.NavMobile className={isMenuOpen ? 'is-open' : ''}>
         <S.Links>
           <S.LinkItem>
-            <Link to="/categories" onClick={() => setIsMenuOpen(false)}>
+            <HashLink to="/categories" onClick={() => setIsMenuOpen(false)}>
               Categorias
-            </Link>
+            </HashLink>
           </S.LinkItem>
           <S.LinkItem>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
+            <HashLink to="/#coming-soon" onClick={() => setIsMenuOpen(false)}>
               Novidades
-            </Link>
+            </HashLink>
           </S.LinkItem>
           <S.LinkItem>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
+            <HashLink to="/#on-sale" onClick={() => setIsMenuOpen(false)}>
               Promoções
-            </Link>
+            </HashLink>
           </S.LinkItem>
         </S.Links>
       </S.NavMobile>

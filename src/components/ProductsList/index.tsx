@@ -1,5 +1,4 @@
 import * as S from './styles'
-import { Game } from '../../pages/Home'
 import { parseToBrl } from '../../utils'
 import Product from '../Product'
 import Loader from '../Loader'
